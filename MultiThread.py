@@ -8,6 +8,7 @@ import shutil
 import codecs
 import chardet
 import threading
+import multiprocessing
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -24,7 +25,7 @@ def GetDataEncoding(data):
         #print '    windows-1251 ==> gbk'
     return data_encoding
     
-def ThreadProc(para):
+def TestThreadProc(para):
     try:
         print threading.current_thread().name, para, 'Enter!!!'
         time.sleep(2)
@@ -36,9 +37,11 @@ def ThreadProc(para):
         #pass
         print threading.current_thread().name, 'Exit!!!'
     
-def MultiThreadStart(thread_num_max, para_all):
+def MultiThreadStart(para_all, ThreadProc, thread_num_max = None):
     thread_list = []
     try:
+        if thread_num_max == None or thread_num_max < 1:
+            thread_num_max = multiprocessing.cpu_count() + 1
         thread_num = thread_num_max
         if thread_num > len(para_all):
             thread_num = len(para_all)
@@ -70,23 +73,24 @@ if "__main__" == __name__:
     print '\n------------------------------The Start-----------------------------'
     start_time = time.clock()
     
-    
+    print 'Cpu Count', multiprocessing.cpu_count()
     #####################################################
     try:
-        thread_num_max = 10
+        thread_num_max = None
         para_all = []
         for i in range(0, 900):
             para_all.append(i)
         
-        thread_list = MultiThreadStart(thread_num_max, para_all)
-        #for thread in thread_list:
-        #    thread.join()
+        #thread_list = MultiThreadStart(para_all, TestThreadProc)
+        thread_list = MultiThreadStart(para_all, TestThreadProc, thread_num_max)
+        for thread in thread_list:
+            thread.join()
             
-        while True:
-            active_count = threading.active_count()
-            #active_count = len(threading.enumerate())
-            if active_count == 1:
-                break
+        # while True:
+            # active_count = threading.active_count()
+            # active_count = len(threading.enumerate())
+            # if active_count == 1:
+                # break
     except Exception, err:
         #print err
         print '===> Exception'
