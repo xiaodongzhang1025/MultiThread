@@ -2,11 +2,7 @@
 __author__ = 'zhangxiaodong'
 import sys
 import os
-import codecs
 import time
-import shutil
-import codecs
-import chardet
 import threading
 import multiprocessing
 
