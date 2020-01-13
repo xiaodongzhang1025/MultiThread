@@ -101,7 +101,8 @@ def MultiProcessStart(para_all, ProcessProc, process_num_max = None):
 
 if "__main__" == __name__:
     print '\n------------------------------The Start-----------------------------'
-    start_time = time.clock()
+    #start_time = time.clock()
+    start_time = time.time()
     
     print 'Cpu Count', multiprocessing.cpu_count()
     #####################################################
@@ -133,6 +134,7 @@ if "__main__" == __name__:
         print ''
     #####################################################
     print '------------------------------The   End-----------------------------'
-    end_time = time.clock()
+    #end_time = time.clock()
+    end_time = time.time()
     print 'Time used %s senconds'%(end_time - start_time)
     sys.exit(0)
